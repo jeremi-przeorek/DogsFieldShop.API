@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\DogsFieldShop.Core.csproj" />
-    <ProjectReference Include="..\Infrastructure\DogsFieldShop.Infrastructure.csproj" />
+    <ProjectReference Include="..\DogsFieldShop.Core\DogsFieldShop.Core.csproj" />
+    <ProjectReference Include="..\DogsFieldShop.Infrastructure\DogsFieldShop.Infrastructure.csproj" />
   </ItemGroup>
 
 

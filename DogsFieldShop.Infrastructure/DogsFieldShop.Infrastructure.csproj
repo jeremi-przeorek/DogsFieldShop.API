@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\DogsFieldShop.Core.csproj" />
+    <ProjectReference Include="..\DogsFieldShop.Core\DogsFieldShop.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
