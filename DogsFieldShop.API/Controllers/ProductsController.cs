@@ -1,13 +1,8 @@
-﻿using DogsFieldShop.Infrastructure.Data;
-using DogsFieldShop.Core.Entities;
+﻿using DogsFieldShop.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DogsFieldShop.Core.Interfaces;
-using System.Net.Http;
 
 namespace DogsFieldShop.Infrastructure.Controllers
 {
@@ -15,39 +10,42 @@ namespace DogsFieldShop.Infrastructure.Controllers
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _productRespository;
+        private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<ProductType> _typeRepository;
+        private readonly IRepository<ProductBrand> _brandRepository;
 
-        public ProductsController(IProductRepository productRespository)
+        public ProductsController(
+            IRepository<Product> productRepository,
+            IRepository<ProductType> typeRepository,
+            IRepository<ProductBrand> brandRepository)
         {
-            _productRespository = productRespository;
+            _productRepository = productRepository;
+            _typeRepository = typeRepository;
+            _brandRepository = brandRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await _productRespository.GetProducts();
-
-            return Ok(products);
+            return Ok(await _productRepository.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Product>>> GetProducts(int id)
         {
-            var product = await _productRespository.GetProductById(id);
-
-            return Ok(product);
+            return Ok(await _productRepository.GetById(id));
         }
 
         [HttpGet("types")]
         public async Task<ActionResult<List<ProductType>>> GetProductTypes()
         {
-            return Ok(await _productRespository.GetProductTypes());
+            return Ok(await _typeRepository.GetAll());
         }
 
         [HttpGet("brands")]
         public async Task<ActionResult<List<ProductType>>> GetProductBrands()
         {
-            return Ok(await _productRespository.GetProductBrands());
+            return Ok(await _brandRepository.GetAll());
         }
     }
 }
