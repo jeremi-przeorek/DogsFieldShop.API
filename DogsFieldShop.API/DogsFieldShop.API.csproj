@@ -19,5 +19,9 @@
     <ProjectReference Include="..\DogsFieldShop.Infrastructure\DogsFieldShop.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 
 </Project>
