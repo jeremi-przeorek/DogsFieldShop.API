@@ -1,14 +1,14 @@
 ﻿using DogsFieldShop.Core.Entities;
 using DogsFieldShop.Core.Interfaces;
+using DogsFieldShop.Core.Specyfications;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DogsFieldShop.Infrastructure.Data
 {
-    class Repository<T> : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly StoreContext _context;
 
@@ -27,5 +27,19 @@ namespace DogsFieldShop.Infrastructure.Data
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<T> GetEntityWithSpec(ISpecyfication<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync(); 
+        }
+
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecyfication<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecyfication<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
+        }
     }
 }

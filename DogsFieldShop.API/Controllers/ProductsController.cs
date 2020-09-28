@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DogsFieldShop.Core.Interfaces;
+using DogsFieldShop.Core.Specyfications;
 
 namespace DogsFieldShop.Infrastructure.Controllers
 {

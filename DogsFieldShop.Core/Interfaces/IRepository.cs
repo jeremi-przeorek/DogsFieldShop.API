@@ -1,10 +1,17 @@
-﻿using System;
+﻿using DogsFieldShop.Core.Entities;
+using DogsFieldShop.Core.Specyfications;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DogsFieldShop.Core.Interfaces
 {
-    class IRepository
+    public interface IRepository<T> where T : BaseEntity
     {
+        Task<T> GetById(int id);
+        Task<IReadOnlyList<T>> GetAll();
+        Task<T> GetEntityWithSpec(ISpecyfication<T> spec);
+        Task<IReadOnlyList<T>> ListAsync(ISpecyfication<T> spec);
     }
 }
