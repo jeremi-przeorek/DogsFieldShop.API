@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DogsFieldShop.Core.Interfaces;
+using AutoMapper;
+using DogsFieldShop.API.Dtos;
 using DogsFieldShop.Core.Specyfications;
 
 namespace DogsFieldShop.Infrastructure.Controllers
@@ -14,27 +16,36 @@ namespace DogsFieldShop.Infrastructure.Controllers
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<ProductType> _typeRepository;
         private readonly IRepository<ProductBrand> _brandRepository;
+        private readonly IMapper _mapper;
 
         public ProductsController(
             IRepository<Product> productRepository,
             IRepository<ProductType> typeRepository,
-            IRepository<ProductBrand> brandRepository)
+            IRepository<ProductBrand> brandRepository,
+            IMapper mapper)
         {
+            _mapper = mapper;
             _productRepository = productRepository;
             _typeRepository = typeRepository;
             _brandRepository = brandRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
         {
-            return Ok(await _productRepository.GetAll());
+            var spec = new ProductsWithTypesAndBrandsSpecification();
+            var products = await _productRepository.GetAllWithSpecAsync(spec);
+
+            return Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Product>>> GetProducts(int id)
         {
-            return Ok(await _productRepository.GetById(id));
+            var spec = new ProductsWithTypesAndBrandsSpecification();
+            var product = await _productRepository.GetEntityWithSpecAsync(spec);
+
+            return Ok(_mapper.Map<ProductDto>(product));
         }
 
         [HttpGet("types")]

@@ -11,7 +11,7 @@ namespace DogsFieldShop.Core.Interfaces
     {
         Task<T> GetById(int id);
         Task<IReadOnlyList<T>> GetAll();
-        Task<T> GetEntityWithSpec(ISpecyfication<T> spec);
-        Task<IReadOnlyList<T>> ListAsync(ISpecyfication<T> spec);
+        Task<T> GetEntityWithSpecAsync(ISpecyfication<T> spec);
+        Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecyfication<T> spec);
     }
 }

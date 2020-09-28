@@ -1,3 +1,5 @@
+using AutoMapper;
+using DogsFieldShop.API.Helpers;
 using DogsFieldShop.Core.Interfaces;
 using DogsFieldShop.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +25,7 @@ namespace DogsFieldShop.Infrastructure
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<StoreContext>(
                 x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }

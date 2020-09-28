@@ -27,12 +27,12 @@ namespace DogsFieldShop.Infrastructure.Data
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<T> GetEntityWithSpec(ISpecyfication<T> spec)
+        public async Task<T> GetEntityWithSpecAsync(ISpecyfication<T> spec)
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync(); 
         }
 
-        public async Task<IReadOnlyList<T>> ListAsync(ISpecyfication<T> spec)
+        public async Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecyfication<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
         }
