@@ -6,12 +6,11 @@ using DogsFieldShop.Core.Interfaces;
 using AutoMapper;
 using DogsFieldShop.API.Dtos;
 using DogsFieldShop.Core.Specyfications;
+using DogsFieldShop.API.Controllers;
 
 namespace DogsFieldShop.Infrastructure.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<ProductType> _typeRepository;
