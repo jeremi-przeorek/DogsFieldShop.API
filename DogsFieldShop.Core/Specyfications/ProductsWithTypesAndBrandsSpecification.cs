@@ -15,7 +15,7 @@ namespace DogsFieldShop.Core.Specyfications
         }
 
         public ProductsWithTypesAndBrandsSpecification
-            (int price) : base(x => x.Price > price)
+            (int id) : base(x => x.Id == id)
         {
             AddInclude(x => x.ProductBrand);
             AddInclude(x => x.ProductType);

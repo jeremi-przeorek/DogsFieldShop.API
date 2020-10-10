@@ -30,7 +30,7 @@ namespace DogsFieldShop.Infrastructure.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
         {
             var spec = new ProductsWithTypesAndBrandsSpecification();
             var products = await _productRepository.GetAllWithSpecAsync(spec);
@@ -39,9 +39,9 @@ namespace DogsFieldShop.Infrastructure.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Product>>> GetProducts(int id)
+        public async Task<ActionResult<List<ProductDto>>> GetProducts(int id)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification();
+            var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productRepository.GetEntityWithSpecAsync(spec);
 
             return Ok(_mapper.Map<ProductDto>(product));
@@ -54,7 +54,7 @@ namespace DogsFieldShop.Infrastructure.Controllers
         }
 
         [HttpGet("brands")]
-        public async Task<ActionResult<List<ProductType>>> GetProductBrands()
+        public async Task<ActionResult<List<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _brandRepository.GetAll());
         }
