@@ -7,6 +7,8 @@ using AutoMapper;
 using DogsFieldShop.API.Dtos;
 using DogsFieldShop.Core.Specyfications;
 using DogsFieldShop.API.Controllers;
+using DogsFieldShop.API.Errors;
+using Microsoft.AspNetCore.Http;
 
 namespace DogsFieldShop.Infrastructure.Controllers
 {
@@ -39,10 +41,14 @@ namespace DogsFieldShop.Infrastructure.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<ProductDto>>> GetProducts(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productRepository.GetEntityWithSpecAsync(spec);
+
+            if (product ==null) return NotFound(new ApiResponse(404));
 
             return Ok(_mapper.Map<ProductDto>(product));
         }
