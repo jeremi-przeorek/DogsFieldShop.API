@@ -5,7 +5,12 @@ using System.Threading.Tasks;
 
 namespace DogsFieldShop.API.Errors
 {
-    public class ApiValidationErrorResponse
+    public class ApiValidationErrorResponse : ApiResponse
     {
+        public IEnumerable<string> Errors { get; set; }
+        public ApiValidationErrorResponse() : base(400)
+        {
+
+        }
     }
 }
