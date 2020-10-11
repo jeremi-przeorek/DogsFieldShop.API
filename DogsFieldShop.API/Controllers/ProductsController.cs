@@ -9,6 +9,7 @@ using DogsFieldShop.Core.Specyfications;
 using DogsFieldShop.API.Controllers;
 using DogsFieldShop.API.Errors;
 using Microsoft.AspNetCore.Http;
+using DogsFieldShop.API.Helpers;
 
 namespace DogsFieldShop.Infrastructure.Controllers
 {
@@ -32,12 +33,16 @@ namespace DogsFieldShop.Infrastructure.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts(
+            [FromQuery]ProductSpecParams productSpecParams)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification();
-            var products = await _productRepository.GetAllWithSpecAsync(spec);
+            var spec = new ProductsWithTypesAndBrandsSpecification(productSpecParams);
+            var specForCount = new ProductsWithFiltersForCountSpecification(productSpecParams);
 
-            return Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
+            var products = await _productRepository.GetAllWithSpecAsync(spec);
+            var count = await _productRepository.CountAsync(specForCount);
+
+            return Ok(new Pagination<ProductDto>(productSpecParams.PageIndex, productSpecParams.PageSize, count, _mapper.Map<IReadOnlyList<ProductDto>>(products)));
         }
 
         [HttpGet("{id}")]
@@ -48,7 +53,7 @@ namespace DogsFieldShop.Infrastructure.Controllers
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
             var product = await _productRepository.GetEntityWithSpecAsync(spec);
 
-            if (product ==null) return NotFound(new ApiResponse(404));
+            if (product == null) return NotFound(new ApiResponse(404));
 
             return Ok(_mapper.Map<ProductDto>(product));
         }

@@ -8,10 +8,32 @@ namespace DogsFieldShop.Core.Specyfications
 {
     public class ProductsWithTypesAndBrandsSpecification : BaseSpecyfication<Product>
     {
-        public ProductsWithTypesAndBrandsSpecification()
+        public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productSpecParams)
+            : base(x =>
+            (string.IsNullOrEmpty(productSpecParams.Search) || x.Name.ToLower().Contains(productSpecParams.Search)
+            && (!productSpecParams.BrandId.HasValue || x.ProductBrandId == productSpecParams.BrandId)
+            && (!productSpecParams.TypeId.HasValue || x.ProductTypeId == productSpecParams.TypeId)))
         {
             AddInclude(x => x.ProductBrand);
             AddInclude(x => x.ProductType);
+            ApplyPaging(productSpecParams.PageSize * (productSpecParams.PageIndex - 1), productSpecParams.PageSize);
+
+            if (!string.IsNullOrEmpty(productSpecParams.Sort))
+            {
+                switch (productSpecParams.Sort)
+                {
+                    case "priceAsc":
+                        AddOrderBy(x => x.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderByDescending(x => x.Price);
+                        break;
+                    default:
+                        AddOrderBy(x => x.Name);
+                        break;
+                }
+            }
+
         }
 
         public ProductsWithTypesAndBrandsSpecification

@@ -36,6 +36,10 @@ namespace DogsFieldShop.Infrastructure.Data
         {
             return await ApplySpecification(spec).ToListAsync();
         }
+        public async Task<int> CountAsync(ISpecyfication<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
 
         private IQueryable<T> ApplySpecification(ISpecyfication<T> spec)
         {

@@ -1,19 +1,11 @@
-using AutoMapper;
-using DogsFieldShop.API.Errors;
 using DogsFieldShop.API.Extensions;
-using DogsFieldShop.API.Helpers;
 using DogsFieldShop.API.Middleware;
-using DogsFieldShop.Core.Interfaces;
 using DogsFieldShop.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System.Linq;
 
 namespace DogsFieldShop.Infrastructure
 {
@@ -34,6 +26,13 @@ namespace DogsFieldShop.Infrastructure
                 x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyHeader().WithOrigins("https://localhost:4200");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +47,8 @@ namespace DogsFieldShop.Infrastructure
             app.UseRouting();
 
             app.UseStaticFiles();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

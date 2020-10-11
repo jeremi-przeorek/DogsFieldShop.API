@@ -13,5 +13,6 @@ namespace DogsFieldShop.Core.Interfaces
         Task<IReadOnlyList<T>> GetAll();
         Task<T> GetEntityWithSpecAsync(ISpecyfication<T> spec);
         Task<IReadOnlyList<T>> GetAllWithSpecAsync(ISpecyfication<T> spec);
+        Task<int> CountAsync(ISpecyfication<T> spec);
     }
 }
